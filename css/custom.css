@@ -1,159 +1,159 @@
 /* ==============================
-   自定义 Preloader (Liquid Loader)
+   自定义 Preloader (Sunset Gradient + Text Bar)
    ============================== */
 
-/* 1. 修改容器为全屏固定定位，层级最高 */
-.liquid-loader {
+/* 1. 背景容器：保持之前的夕阳渐变色不变 */
+#custom-loader {
     position: fixed;
-    /* 固定在屏幕上 */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 99999;
-    /* 确保在所有内容之上 */
-    background-color: #121212;
-    /* 遮罩背景色（深色以配合您的动画） */
+
+    /* 保持您喜欢的夕阳背景 */
+    background: linear-gradient(to bottom, #2E1440 0%, #C5384F 60%, #FF8C42 100%);
 
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    /* 垂直居中 */
-    gap: 20px;
-    /* 增加一点间距 */
-    font-family: system-ui, sans-serif;
+    align-items: center;
 
-    /* 添加消失动画 */
     transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
-/* 2. 加载完成后的隐藏状态类 */
-.liquid-loader.loaded {
+/* 2. 隐藏状态 */
+#custom-loader.loaded {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    /* 隐藏后不再阻挡点击 */
 }
 
-/* --- 以下为您提供的原始样式 (稍作调整) --- */
+/* ==============================
+   您提供的新动画代码 (适配版)
+   ============================== */
 
-.loader-track {
+.loader {
+    width: 80px;
+    height: 50px;
     position: relative;
-    width: 180px;
-    height: 32px;
-    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow:
-        inset 0 2px 4px rgba(0, 0, 0, 0.6),
-        0 1px 3px rgba(255, 255, 255, 0.1);
+    /* 为了让它在屏幕正中间更稳，稍微放大一点点视觉效果 */
+    transform: scale(1.2);
 }
 
-.liquid-fill {
+.loader-text {
     position: absolute;
-    top: 2px;
-    left: 2px;
-    height: calc(100% - 4px);
-    background: linear-gradient(90deg, #4f46e5, #7c3aed, #ec4899, #f59e0b);
-    border-radius: 14px;
-    animation:
-        fillProgress 4s ease-out infinite,
-        colorShift 3s linear infinite;
-    box-shadow:
-        0 0 12px rgba(124, 58, 237, 0.4),
-        inset 0 1px 2px rgba(255, 255, 255, 0.2);
-}
-
-.loading-text {
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
+    top: 0;
+    padding: 0;
+    margin: 0;
+    color: #C8B6FF;
+    /* 淡紫色字体，配夕阳背景很合适 */
+    animation: text_713 3.5s ease both infinite;
+    font-size: .8rem;
     letter-spacing: 1px;
-    animation: textGlow 1s ease-in-out infinite;
+    font-weight: bold;
+    /* 加粗一点让字更清晰 */
 }
 
-.dot {
-    margin-left: 3px;
-    animation: blink 1.5s infinite;
+.load {
+    background-color: #9A79FF;
+    border-radius: 50px;
+    display: block;
+    height: 16px;
+    width: 16px;
+    bottom: 0;
+    position: absolute;
+    transform: translateX(64px);
+    animation: loading_713 3.5s ease both infinite;
 }
 
-.dot:nth-of-type(1) {
-    animation-delay: 0s;
-}
-
-.dot:nth-of-type(2) {
-    animation-delay: 0.3s;
-}
-
-.dot:nth-of-type(3) {
-    animation-delay: 0.6s;
+.load::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: #D1C2FF;
+    border-radius: inherit;
+    animation: loading2_713 3.5s ease both infinite;
 }
 
 /* 动画关键帧 */
-@keyframes fillProgress {
+@keyframes text_713 {
     0% {
-        width: 4px;
+        letter-spacing: 1px;
+        transform: translateX(0px);
     }
 
-    25% {
-        width: 25%;
+    40% {
+        letter-spacing: 2px;
+        transform: translateX(26px);
     }
 
-    50% {
-        width: 50%;
+    80% {
+        letter-spacing: 1px;
+        transform: translateX(32px);
     }
 
-    75% {
-        width: 75%;
+    90% {
+        letter-spacing: 2px;
+        transform: translateX(0px);
     }
 
     100% {
-        width: calc(100% - 4px);
+        letter-spacing: 1px;
+        transform: translateX(0px);
     }
 }
 
-@keyframes colorShift {
+@keyframes loading_713 {
     0% {
-        filter: hue-rotate(0deg) brightness(1);
+        width: 16px;
+        transform: translateX(0px);
     }
 
-    33% {
-        filter: hue-rotate(120deg) brightness(1.1);
+    40% {
+        width: 100%;
+        transform: translateX(0px);
     }
 
-    66% {
-        filter: hue-rotate(240deg) brightness(0.9);
+    80% {
+        width: 16px;
+        transform: translateX(64px);
+    }
+
+    90% {
+        width: 100%;
+        transform: translateX(0px);
     }
 
     100% {
-        filter: hue-rotate(360deg) brightness(1);
+        width: 16px;
+        transform: translateX(0px);
     }
 }
 
-@keyframes textGlow {
+@keyframes loading2_713 {
+    0% {
+        transform: translateX(0px);
+        width: 16px;
+    }
 
-    0%,
+    40% {
+        transform: translateX(0%);
+        width: 80%;
+    }
+
+    80% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    90% {
+        width: 80%;
+        transform: translateX(15px);
+    }
+
     100% {
-        opacity: 0.7;
-        text-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
-    }
-
-    50% {
-        opacity: 1;
-        text-shadow: 0 0 16px rgba(139, 92, 246, 0.6);
-    }
-}
-
-@keyframes blink {
-
-    0%,
-    50% {
-        opacity: 1;
-    }
-
-    51%,
-    100% {
-        opacity: 0;
+        transform: translateX(0px);
+        width: 16px;
     }
 }
