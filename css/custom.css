@@ -157,3 +157,110 @@
         width: 16px;
     }
 }
+
+/* =================================================================
+   Butterfly 主题适配：3D 渐变玻璃拟态卡片风格 (Uiverse.io 风格适配)
+   应用范围：个人信息、公告、文章卡片
+   ================================================================= */
+
+/* 1. 核心卡片样式重写 */
+#aside-content .card-widget,
+.layout>.recent-posts>.recent-post-item {
+    /* 背景：使用你提供的红蓝渐变 */
+    background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%) !important;
+
+    /* 边框和圆角：模仿原代码的 smooth 风格 */
+    border-radius: 25px !important;
+    /* 考虑到文章内容，25px比50px更适合布局 */
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+
+    /* 阴影效果 */
+    box-shadow: rgba(37, 5, 71, 0.3) 0px 15px 25px -5px !important;
+
+    /* 3D 变换过渡 */
+    transition: all 0.5s ease-in-out !important;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    /* 防止内容溢出圆角 */
+}
+
+/* 2. 添加玻璃质感高光层 (模拟原代码的 .glass) */
+#aside-content .card-widget::before,
+.layout>.recent-posts>.recent-post-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    /* 半透明渐变遮罩，制造玻璃反光感 */
+    background: linear-gradient(0deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.3) 100%);
+    pointer-events: none;
+    /* 让鼠标点击穿透这层遮罩 */
+    z-index: -1;
+    /* 放在内容之下 */
+}
+
+/* 3. 强制字体颜色变白 (因为背景深色，必须反转文字颜色) */
+/* 文章标题 */
+.recent-post-item .article-title,
+.recent-post-item .article-title:hover {
+    color: #fff !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 文章元数据 (日期、标签等) */
+.recent-post-item .article-meta-wrap,
+.recent-post-item .article-meta-wrap i,
+.recent-post-item .article-meta-wrap span,
+.recent-post-item .article-meta-wrap a {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 文章摘要内容 */
+.recent-post-item .content,
+.recent-post-item .post_content {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* 侧栏标题 (公告、信息等) */
+#aside-content .item-headline span,
+#aside-content .item-headline i {
+    color: #fff !important;
+}
+
+/* 侧栏文本内容 */
+#aside-content .card-content,
+#aside-content .card-announcement .item-content {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 个人信息统计数字 */
+#aside-content .card-info-data .headline,
+#aside-content .card-info-data .length-num {
+    color: #fff !important;
+}
+
+/* 4. 悬停效果 (Hover) - 模拟 3D 抬起 */
+#aside-content .card-widget:hover,
+.layout>.recent-posts>.recent-post-item:hover {
+    /* 稍微放大并上浮，模拟 3D 效果 */
+    transform: translateY(-10px) scale(1.02) !important;
+
+    /* 加深阴影 */
+    box-shadow: rgba(37, 5, 71, 0.5) 0px 30px 30px -10px !important;
+
+    /* 边框加亮 */
+    border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 5. 针对夜间模式的微调 (防止夜间模式滤镜干扰) */
+[data-theme="dark"] #aside-content .card-widget,
+[data-theme="dark"] .layout>.recent-posts>.recent-post-item {
+    /* 在夜间模式下保持你的渐变色，不被黑色覆盖 */
+    background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%) !important;
+}
