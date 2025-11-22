@@ -1,0 +1,48 @@
+/* --- 加强版无缝页脚 --- */
+#footer {
+    /* 1. 设置渐变背景 */
+    background: linear-gradient(180deg, #ffb7a1, #ff9eb5, #e35d6a, #4a1a2c, #120408) !important;
+
+    /* 2. 【暴力重合】加大提拉力度，防止视网膜屏幕渲染出缝隙 */
+    margin-top: -5px !important;
+
+    /* 3. 补偿内边距，因为向上提了5px，所以内边距多加一点，保持文字位置 */
+    padding-top: 55px !important;
+
+    /* 4. 【关键】去掉可能存在的默认黑边框或阴影 */
+    border-top: none !important;
+    box-shadow: none !important;
+
+    /* 确保层级 */
+    position: relative;
+    z-index: 1;
+}
+
+/* --- 绝招：创建一个“颜色胶带”遮盖缝隙 --- */
+#footer::before {
+    content: "";
+    position: absolute;
+
+    /* 让这个色块跨越缝隙 */
+    top: -10px;
+    left: 0;
+    width: 100%;
+
+    /* 高度只要足够盖住缝隙即可 */
+    height: 20px;
+
+    /* ⚠️ 必须是主背景和页脚的连接色 */
+    background: #ffb7a1 !important;
+
+    /* 放在背景层之上，文字之下 */
+    z-index: -1;
+
+    /* 消除有些浏览器对伪元素的奇怪渲染 */
+    pointer-events: none;
+}
+
+/* 防止透明层干扰 */
+#footer-wrap {
+    background: transparent !important;
+    box-shadow: none !important;
+}
