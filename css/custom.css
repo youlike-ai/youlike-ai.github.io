@@ -1,5 +1,133 @@
 /* =================================================================
-   第一部分：自定义 Preloader (加载动画 - 保持不变)
+   第零部分：全局变量 (高清白粉调色板)
+   ================================================================= */
+:root {
+    /* 1. 背景微调：保持透明感，但稍微白一点点，减少背景杂色干扰 */
+    --card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 220, 230, 0.8) 100%);
+
+    --card-hover-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 210, 225, 0.9) 100%);
+
+    /* 2. 文字颜色加深：使用更深的紫黑色，对比度更高 */
+    --text-color: #4a3b42;
+
+    /* 3. 字体增强：白色光晕变量 (关键) */
+    --text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 5px rgba(255, 255, 255, 0.5);
+
+    /* 4. 磨砂质感：模糊度提高到 15px，背景更糊，文字更清 */
+    --card-radius: 25px;
+    --glass-blur: blur(15px) saturate(120%);
+    --border-color: rgba(255, 255, 255, 0.65);
+}
+
+[data-theme="dark"] {
+    /* 暗色模式适配 */
+    --card-bg: linear-gradient(135deg, rgba(40, 30, 40, 0.8) 0%, rgba(70, 40, 60, 0.8) 100%);
+    --card-hover-bg: linear-gradient(135deg, rgba(50, 40, 50, 0.9) 0%, rgba(90, 50, 70, 0.9) 100%);
+    --text-color: #ffffff;
+    --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    /* 暗色模式用黑色阴影 */
+}
+
+/* =================================================================
+   第一部分：侧边栏 (保持不变)
+   ================================================================= */
+#aside-content .card-widget {
+    background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%) !important;
+    border-radius: var(--card-radius) !important;
+    border: 1px solid var(--border-color) !important;
+    overflow: hidden !important;
+}
+
+#aside-content * {
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    /* 侧边栏文字也加点阴影 */
+}
+
+/* =================================================================
+   第二部分：首页文章卡片 (高清阅读优化版)
+   ================================================================= */
+
+/* 1. 卡片主体容器 */
+#recent-posts>.recent-post-item {
+    background: var(--card-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+    border-radius: var(--card-radius) !important;
+    border: 1px solid var(--border-color) !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 32px 0 rgba(255, 180, 200, 0.25) !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+/* 2. 图片区域 */
+.recent-post-item .post_cover {
+    overflow: hidden !important;
+    width: 44% !important;
+    height: 100% !important;
+}
+
+.recent-post-item .post_cover img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 0 !important;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* 3. 文字区域 (关键修改) */
+#recent-posts>.recent-post-item>.recent-post-info {
+    background: transparent !important;
+    padding: 30px !important;
+    width: 56% !important;
+}
+
+/* 标题优化：加粗 + 白色描边光晕 */
+.recent-post-item .article-title {
+    color: var(--text-color) !important;
+    font-weight: 900 !important;
+    /* 字体加粗 */
+    text-shadow: var(--text-shadow) !important;
+    /* 关键：加上白色光晕 */
+    letter-spacing: 0.5px;
+    /* 字间距微调 */
+}
+
+/* 描述优化：加深 + 白色描边光晕 */
+.recent-post-item .article-meta-wrap,
+.recent-post-item .content {
+    color: var(--text-color) !important;
+    font-weight: 500 !important;
+    /* 稍微加粗一点 */
+    opacity: 1 !important;
+    /* 不透明度设为1，不再半透明 */
+    text-shadow: var(--text-shadow) !important;
+    /* 关键：加上白色光晕 */
+}
+
+/* 元数据图标颜色修正 */
+.recent-post-item .article-meta-wrap i {
+    color: #b05f7c !important;
+    /* 把小图标改成深粉色，更显眼 */
+}
+
+/* =================================================================
+   第三部分：交互效果 (Hover)
+   ================================================================= */
+
+#recent-posts>.recent-post-item:hover {
+    background: var(--card-hover-bg) !important;
+    transform: translateY(-5px) !important;
+    box-shadow: 0 15px 40px rgba(255, 150, 180, 0.35) !important;
+    border-color: #fff !important;
+}
+
+#recent-posts>.recent-post-item:hover .post_cover img {
+    transform: scale(1.15) !important;
+}
+
+/* =================================================================
+   第四部分：加载动画 (保持不变)
    ================================================================= */
 #custom-loader {
     position: fixed;
@@ -12,20 +140,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
+    transition: opacity .6s ease, visibility .6s ease
 }
 
 #custom-loader.loaded {
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
+    pointer-events: none
 }
 
 .loader {
     width: 80px;
     height: 50px;
     position: relative;
-    transform: scale(1.2);
+    transform: scale(1.2)
 }
 
 .loader-text {
@@ -37,7 +165,7 @@
     animation: text_713 3.5s ease both infinite;
     font-size: .8rem;
     letter-spacing: 1px;
-    font-weight: bold;
+    font-weight: bold
 }
 
 .load {
@@ -49,7 +177,7 @@
     bottom: 0;
     position: absolute;
     transform: translateX(64px);
-    animation: loading_713 3.5s ease both infinite;
+    animation: loading_713 3.5s ease both infinite
 }
 
 .load::before {
@@ -59,272 +187,86 @@
     height: 100%;
     background-color: #D1C2FF;
     border-radius: inherit;
-    animation: loading2_713 3.5s ease both infinite;
+    animation: loading2_713 3.5s ease both infinite
 }
 
 @keyframes text_713 {
     0% {
         letter-spacing: 1px;
-        transform: translateX(0px);
+        transform: translateX(0)
     }
 
     40% {
         letter-spacing: 2px;
-        transform: translateX(26px);
+        transform: translateX(26px)
     }
 
     80% {
         letter-spacing: 1px;
-        transform: translateX(32px);
+        transform: translateX(32px)
     }
 
     90% {
         letter-spacing: 2px;
-        transform: translateX(0px);
+        transform: translateX(0)
     }
 
     100% {
         letter-spacing: 1px;
-        transform: translateX(0px);
+        transform: translateX(0)
     }
 }
 
 @keyframes loading_713 {
     0% {
         width: 16px;
-        transform: translateX(0px);
+        transform: translateX(0)
     }
 
     40% {
         width: 100%;
-        transform: translateX(0px);
+        transform: translateX(0)
     }
 
     80% {
         width: 16px;
-        transform: translateX(64px);
+        transform: translateX(64px)
     }
 
     90% {
         width: 100%;
-        transform: translateX(0px);
+        transform: translateX(0)
     }
 
     100% {
         width: 16px;
-        transform: translateX(0px);
+        transform: translateX(0)
     }
 }
 
 @keyframes loading2_713 {
     0% {
-        transform: translateX(0px);
-        width: 16px;
+        transform: translateX(0);
+        width: 16px
     }
 
     40% {
-        transform: translateX(0%);
-        width: 80%;
+        transform: translateX(0);
+        width: 80%
     }
 
     80% {
         width: 100%;
-        transform: translateX(0px);
+        transform: translateX(0)
     }
 
     90% {
         width: 80%;
-        transform: translateX(15px);
+        transform: translateX(15px)
     }
 
     100% {
-        transform: translateX(0px);
-        width: 16px;
+        transform: translateX(0);
+        width: 16px
     }
-}
-
-/* =================================================================
-   第二部分：侧边栏 (Aside) 专属样式
-   风格：红蓝渐变玻璃拟态 (从原代码中分离，只作用于侧边栏)
-   ================================================================= */
-
-/* 侧栏卡片容器 */
-#aside-content .card-widget {
-    background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%) !important;
-    border-radius: 20px !important;
-    /* 统一调整为 20px */
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    box-shadow: rgba(37, 5, 71, 0.3) 0px 15px 25px -5px !important;
-    transition: all 0.5s ease-in-out !important;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-}
-
-/* 侧栏高光遮罩 */
-#aside-content .card-widget::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.3) 100%);
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* 侧栏文字颜色强制变白 */
-#aside-content .item-headline span,
-#aside-content .item-headline i,
-#aside-content .card-content,
-#aside-content .card-announcement .item-content,
-#aside-content .card-info-data .headline,
-#aside-content .card-info-data .length-num,
-#aside-content a {
-    color: #fff !important;
-}
-
-/* 侧栏悬停效果 */
-#aside-content .card-widget:hover {
-    transform: translateY(-5px) scale(1.02) !important;
-    box-shadow: rgba(37, 5, 71, 0.5) 0px 30px 30px -10px !important;
-    border-color: rgba(255, 255, 255, 0.8) !important;
-}
-
-/* =================================================================
-   第三部分：首页文章卡片 (Home Post Cards) 专属样式
-   风格：Dark Neon Cyberpunk (暗黑霓虹)
-   ================================================================= */
-
-/* 1. 核心卡片容器 */
-#recent-posts>.recent-post-item {
-    /* 变量定义 */
-    --cyber-bg: hsla(240, 15%, 9%, 1);
-    --cyber-primary: hsl(189, 92%, 58%);
-    --cyber-text: hsl(0, 0%, 83%);
-
-    /* 布局修复 */
-    position: relative;
-    z-index: 1;
-    border-radius: 20px !important;
-    /* 强制圆角 */
-    border: none !important;
-    overflow: hidden !important;
-    /* 关键：裁剪掉溢出的图片直角 */
-    transition: all 0.3s ease-in-out;
-
-    /* 暗黑背景 */
-    background-color: var(--cyber-bg) !important;
-    background-image:
-        radial-gradient(at 88% 40%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
-        radial-gradient(at 0% 64%, hsl(189, 99%, 26%) 0px, transparent 85%),
-        radial-gradient(at 41% 94%, hsl(189, 97%, 36%) 0px, transparent 85%) !important;
-
-    box-shadow: 0px -5px 10px 0px rgba(255, 255, 255, 0.05) inset, 0 10px 20px rgba(0, 0, 0, 0.6) !important;
-}
-
-/* 2. 修复 Layout 3 的布局背景干扰 */
-/* 必须将原来的白色背景去掉，才能显示出我们的暗黑背景 */
-#recent-posts>.recent-post-item .recent-post-info,
-#recent-posts>.recent-post-item .post_cover {
-    background: transparent !important;
-    padding: 0 !important;
-}
-
-/* 3. 修复 Layout 3 图片圆角问题 */
-#recent-posts>.recent-post-item .post_cover img {
-    border-radius: 0 !important;
-    /* 让父容器去裁剪，图片本身不要圆角 */
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover;
-    opacity: 0.85;
-    /* 默认稍暗，突出霓虹感 */
-    transition: all 0.4s ease;
-}
-
-/* 悬停时图片变亮放大 */
-#recent-posts>.recent-post-item:hover .post_cover img {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-/* 4. 霓虹旋转流光背景特效 */
-#recent-posts>.recent-post-item::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: 50%;
-    left: 50%;
-    width: 200%;
-    height: 200%;
-    transform: translate(-50%, -50%);
-    background-image: linear-gradient(0deg, transparent 0%, #00f2ff 50%, transparent 100%);
-    opacity: 0.1;
-    /* 亮度控制 */
-    animation: rotate 8s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes rotate {
-    from {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-
-    to {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
-
-/* 5. 字体颜色修复 (确保不受侧栏样式影响) */
-
-/* 标题 */
-#recent-posts>.recent-post-item .article-title {
-    color: #fff !important;
-    text-shadow: 0 0 8px rgba(0, 242, 255, 0.6);
-    /* 霓虹发光文字 */
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-#recent-posts>.recent-post-item .article-title:hover {
-    color: #00f2ff !important;
-}
-
-/* 摘要内容 */
-#recent-posts>.recent-post-item .content {
-    color: rgba(255, 255, 255, 0.7) !important;
-}
-
-/* 元信息 (日期、分类等) */
-#recent-posts>.recent-post-item .article-meta-wrap {
-    color: rgba(0, 242, 255, 0.8) !important;
-}
-
-#recent-posts>.recent-post-item .article-meta-wrap i,
-#recent-posts>.recent-post-item .article-meta-wrap span,
-#recent-posts>.recent-post-item .article-meta-wrap a {
-    color: inherit !important;
-}
-
-/* 6. 悬停互动：整体上浮 */
-#recent-posts>.recent-post-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), 0 10px 25px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* 7. 阅读更多按钮美化 */
-#recent-posts>.recent-post-item .article-more-link a {
-    background: rgba(0, 242, 255, 0.1) !important;
-    border: 1px solid #00f2ff !important;
-    color: #00f2ff !important;
-    border-radius: 50px !important;
-    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
-}
-
-#recent-posts>.recent-post-item .article-more-link a:hover {
-    background: #00f2ff !important;
-    color: #000 !important;
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
 }
