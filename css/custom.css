@@ -164,8 +164,7 @@
    ================================================================= */
 
 /* 1. 核心卡片样式重写 */
-#aside-content .card-widget,
-.layout>.recent-posts>.recent-post-item {
+#aside-content .card-widget {
     /* 背景：使用你提供的红蓝渐变 */
     background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%) !important;
 
@@ -186,8 +185,7 @@
 }
 
 /* 2. 添加玻璃质感高光层 (模拟原代码的 .glass) */
-#aside-content .card-widget::before,
-.layout>.recent-posts>.recent-post-item::before {
+#aside-content .card-widget::before {
     content: '';
     position: absolute;
     top: 0;
@@ -246,8 +244,7 @@
 }
 
 /* 4. 悬停效果 (Hover) - 模拟 3D 抬起 */
-#aside-content .card-widget:hover,
-.layout>.recent-posts>.recent-post-item:hover {
+#aside-content .card-widget:hover {
     /* 稍微放大并上浮，模拟 3D 效果 */
     transform: translateY(-10px) scale(1.02) !important;
 
@@ -263,4 +260,160 @@
 [data-theme="dark"] .layout>.recent-posts>.recent-post-item {
     /* 在夜间模式下保持你的渐变色，不被黑色覆盖 */
     background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%) !important;
+}
+
+/*新的添加gemini
+/* =================================================================
+   文章卡片专属样式：Dark Neon Cyberpunk (适配你的新素材)
+   ================================================================= */
+
+/* 1. 定义局部变量和主容器样式 */
+.layout>.recent-posts>.recent-post-item {
+    /* 定义颜色变量 */
+    --white: hsl(0, 0%, 100%);
+    --black: hsl(240, 15%, 9%);
+    --paragraph: hsl(0, 0%, 83%);
+    --line: hsl(240, 9%, 17%);
+    --primary: hsl(189, 92%, 58%);
+
+    /* 基础布局重置 */
+    position: relative;
+    overflow: hidden;
+    /* 必须隐藏溢出，为了旋转光效不跑出去 */
+    z-index: 1;
+    transition: all 0.3s ease-in-out;
+    border: none !important;
+    /* 去除原本的边框 */
+
+    /* 核心背景：复制自你提供的代码 */
+    background-color: hsla(240, 15%, 9%, 1) !important;
+    background-image:
+        radial-gradient(at 88% 40%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+        radial-gradient(at 49% 30%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+        radial-gradient(at 14% 26%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+        radial-gradient(at 0% 64%, hsl(189, 99%, 26%) 0px, transparent 85%),
+        radial-gradient(at 41% 94%, hsl(189, 97%, 36%) 0px, transparent 85%),
+        radial-gradient(at 100% 99%, hsl(188, 94%, 13%) 0px, transparent 85%) !important;
+
+    border-radius: 1rem !important;
+    box-shadow: 0px -16px 24px 0px rgba(255, 255, 255, 0.25) inset !important;
+}
+
+/* 2. 模拟旋转流光边框 (使用伪元素实现) */
+.layout>.recent-posts>.recent-post-item::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    /* 放在最底层 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    transform-origin: center;
+
+    width: 250%;
+    /* 足够大以覆盖旋转 */
+    height: 250%;
+
+    /* 旋转的光带 */
+    background-image: linear-gradient(0deg,
+            hsla(0, 0%, 100%, 0) 0%,
+            hsl(189, 100%, 50%) 40%,
+            hsl(189, 100%, 50%) 60%,
+            hsla(0, 0%, 40%, 0) 100%);
+
+    opacity: 0.3;
+    /*稍微调低透明度，避免太刺眼 */
+    animation: rotate 8s linear infinite;
+    pointer-events: none;
+}
+
+/* 旋转动画关键帧 */
+@keyframes rotate {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* 3. 内容遮罩 (让中间变黑，只留边框发光感) 
+   Butterfly的卡片结构比较复杂，我们给内容区加背景来模拟
+*/
+.recent-post-info {
+    z-index: 2;
+    position: relative;
+    /* 让文字区域背景半透明，透出底部的渐变 */
+    background: transparent !important;
+}
+
+/* 4. 文字颜色适配 (强制变色) */
+
+/* 标题 */
+.recent-post-item .article-title {
+    color: var(--white) !important;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.recent-post-item .article-title:hover {
+    color: var(--primary) !important;
+}
+
+/* 摘要文字 */
+.recent-post-item .content {
+    color: var(--paragraph) !important;
+    font-size: 0.9rem;
+}
+
+/* 元数据 (日期、标签) */
+.recent-post-item .article-meta-wrap,
+.recent-post-item .article-meta-wrap i,
+.recent-post-item .article-meta-wrap a {
+    color: var(--primary) !important;
+    opacity: 0.9;
+}
+
+/* 5. 分割线效果 (对应原代码的 .line) */
+.recent-post-info::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: hsl(240, 9%, 17%);
+    margin-bottom: 10px;
+}
+
+/* 6. "阅读更多"按钮 (模拟原代码的 .button) */
+.recent-post-item .article-more-link a {
+    background-image: linear-gradient(0deg,
+            hsl(189, 92%, 58%),
+            hsl(189, 99%, 26%) 100%) !important;
+    color: #fff !important;
+    border-radius: 9999px !important;
+    box-shadow: inset 0 -2px 25px -4px #ffffff;
+    padding: 6px 15px !important;
+    border: 0 !important;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.recent-post-item .article-more-link a:hover {
+    transform: scale(1.05);
+}
+
+/* 7. 图片适配 */
+/* 因为背景很黑，图片如果太亮会很突兀，稍微降低一点图片亮度，hover时恢复 */
+.recent-post-item .post_cover img {
+    filter: brightness(0.85);
+    transition: filter 0.3s;
+}
+
+.recent-post-item:hover .post_cover img {
+    filter: brightness(1);
+}
+
+/* 8. 整体 Hover 效果 */
+.layout>.recent-posts>.recent-post-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px -16px 24px 0px rgba(255, 255, 255, 0.1) inset, 0 10px 20px rgba(0, 0, 0, 0.5) !important;
 }
